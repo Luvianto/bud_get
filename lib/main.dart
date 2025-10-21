@@ -1,20 +1,27 @@
+import 'package:bud_get/main/app.dart';
+import 'package:bud_get/main/env_config.dart';
+import 'package:bud_get/main/observers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runApp(const MainApp());
-}
+void main() => initializeApp(Environment.development);
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+Future<void> initializeApp(Environment env) async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
-  }
+  AppEnv.initialize(env);
+
+  // SystemChrome is a Flutter API that controls system-level UI
+  // (status bar, nav bar, etc.)
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle.light.copyWith(
+      statusBarColor: Colors.black,
+      statusBarBrightness: Brightness.light,
+    ),
+  );
+
+  runApp(ProviderScope(observers: [Observers()], child: MainApp()));
+
+  await Future.delayed(const Duration(seconds: 2));
 }
