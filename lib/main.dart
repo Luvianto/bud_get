@@ -1,6 +1,6 @@
 import 'package:bud_get/main/app.dart';
 import 'package:bud_get/main/env_config.dart';
-import 'package:bud_get/main/observers.dart';
+import 'package:bud_get/main/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
