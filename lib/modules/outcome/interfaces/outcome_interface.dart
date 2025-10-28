@@ -1,5 +1,5 @@
 import 'package:bud_get/common/models/either.dart';
-import 'package:bud_get/module/outcome/models/outcome_model.dart';
+import 'package:bud_get/modules/outcome/models/outcome_model.dart';
 
 abstract class OutcomeInterface {
   Future<Either<Exception, List<OutcomeModel>>> getOutcomes();
