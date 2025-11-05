@@ -9,28 +9,26 @@ class OutcomeRepositoryImpl extends OutcomeRepository {
   OutcomeRepositoryImpl(this.outcomeDatasource);
 
   @override
-  Future<Either<Exception, DataResponse>> fetchOutcomeList({
-    required int skip,
-  }) {
-    return outcomeDatasource.getOutcomeList(skip: skip);
+  Future<Either<Exception, DataResponse>> getOutcomeList({required int skip}) {
+    return outcomeDatasource.fetchOutcomeList(skip: skip);
   }
 
   @override
-  Future<Either<Exception, DataResponse>> storeOutcome({
+  Future<Either<Exception, DataResponse>> createOutcome({
     required OutcomeModel outcomeModel,
   }) {
-    return outcomeDatasource.createOutcome(outcomeModel: outcomeModel);
+    return outcomeDatasource.storeOutcome(outcomeModel: outcomeModel);
   }
 
   @override
-  Future<Either<Exception, DataResponse>> updateOutcome({
+  Future<Either<Exception, DataResponse>> editOutcome({
     required OutcomeModel outcomeModel,
   }) {
-    return outcomeDatasource.editOutcome(outcomeModel: outcomeModel);
+    return outcomeDatasource.updateOutcome(outcomeModel: outcomeModel);
   }
 
   @override
-  Future<Either<Exception, void>> destroyOutcome({required String outcomeId}) {
-    return outcomeDatasource.deleteOutcome(outcomeId: outcomeId);
+  Future<Either<Exception, void>> deleteOutcome({required String outcomeId}) {
+    return outcomeDatasource.destroyOutcome(outcomeId: outcomeId);
   }
 }

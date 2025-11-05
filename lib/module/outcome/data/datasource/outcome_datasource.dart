@@ -3,12 +3,12 @@ import 'package:bud_get/chore/handler/either.dart';
 import 'package:bud_get/module/outcome/model/outcome_model.dart';
 
 abstract class OutcomeDatasource {
-  Future<Either<Exception, DataResponse>> getOutcomeList({required int skip});
-  Future<Either<Exception, DataResponse>> createOutcome({
+  Future<Either<Exception, DataResponse>> fetchOutcomeList({required int skip});
+  Future<Either<Exception, DataResponse>> storeOutcome({
     required OutcomeModel outcomeModel,
   });
-  Future<Either<Exception, DataResponse>> editOutcome({
+  Future<Either<Exception, DataResponse>> updateOutcome({
     required OutcomeModel outcomeModel,
   });
-  Future<Either<Exception, void>> deleteOutcome({required String outcomeId});
+  Future<Either<Exception, void>> destroyOutcome({required String outcomeId});
 }
