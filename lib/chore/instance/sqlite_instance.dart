@@ -1,10 +1,9 @@
 import 'package:bud_get/chore/handler/data_response.dart';
-import 'package:bud_get/storage/sqlite.dart';
+import 'package:bud_get/common/data/local/sqlite_service.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SQLiteInstance {
-  static final SQLiteInstance _instance = SQLiteInstance._singleton();
-  factory SQLiteInstance() => _instance;
+  static final SQLiteInstance instance = SQLiteInstance._singleton();
   // This is a named consturctor with a private modifier
   // Search it yourself
   SQLiteInstance._singleton();
@@ -12,11 +11,10 @@ class SQLiteInstance {
   static Database? _database;
 
   Future<Database> get database async {
-    _database ??= await SQLite.init();
+    _database ??= await SQLiteService.init();
     return _database!;
   }
 
-  /// Insert a single row into [table]
   Future<DataResponse<int>> insert(
     String table,
     Map<String, dynamic> data,
@@ -30,14 +28,20 @@ class SQLiteInstance {
     }
   }
 
-  /// Retrieve all rows from [table]
   Future<DataResponse<List<Map<String, dynamic>>>> getAll(
     String table, {
     String? orderBy,
+    String? where,
+    List<Object?>? whereArgs,
   }) async {
     try {
       final db = await database;
-      final result = await db.query(table, orderBy: orderBy);
+      final result = await db.query(
+        table,
+        orderBy: orderBy,
+        where: where,
+        whereArgs: whereArgs,
+      );
       return DataResponse(
         status: true,
         message: 'Query successful',
@@ -48,7 +52,6 @@ class SQLiteInstance {
     }
   }
 
-  /// Retrieve a single row by [id]
   Future<DataResponse<Map<String, dynamic>?>> getById(
     String table,
     int id,
@@ -66,7 +69,6 @@ class SQLiteInstance {
     }
   }
 
-  /// Update a row by [id]
   Future<DataResponse<int>> update(
     String table,
     Map<String, dynamic> data,
@@ -90,7 +92,6 @@ class SQLiteInstance {
     }
   }
 
-  /// Delete a row by [id]
   Future<DataResponse<int>> delete(String table, int id) async {
     try {
       final db = await database;
@@ -105,7 +106,6 @@ class SQLiteInstance {
     }
   }
 
-  /// Clear all rows from [table]
   Future<DataResponse<int>> clearTable(String table) async {
     try {
       final db = await database;
