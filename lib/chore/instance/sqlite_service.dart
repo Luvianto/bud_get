@@ -1,12 +1,13 @@
 import 'package:bud_get/chore/handler/data_response.dart';
+import 'package:bud_get/chore/handler/either.dart';
 import 'package:bud_get/common/data/local/sqlite_service.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SQLiteInstance {
-  static final SQLiteInstance instance = SQLiteInstance._singleton();
+class SqliteService {
+  static final SqliteService instance = SqliteService._singleton();
   // This is a named consturctor with a private modifier
   // Search it yourself
-  SQLiteInstance._singleton();
+  SqliteService._singleton();
 
   static Database? _database;
 
@@ -15,20 +16,20 @@ class SQLiteInstance {
     return _database!;
   }
 
-  Future<DataResponse<int>> insert(
+  Future<Either<Exception, Map<String, dynamic>>> insert(
     String table,
     Map<String, dynamic> data,
   ) async {
     try {
       final db = await database;
       final id = await db.insert(table, data);
-      return DataResponse(status: true, message: 'Insert successful', data: id);
+      return Right({'id': id, ...data});
     } catch (e) {
-      return DataResponse(status: false, message: 'Insert failed: $e');
+      return Left(Exception('Insert failed: $e'));
     }
   }
 
-  Future<DataResponse<List<Map<String, dynamic>>>> getAll(
+  Future<Either<Exception, List<Map<String, dynamic>>?>> getAll(
     String table, {
     String? orderBy,
     String? where,
@@ -42,13 +43,9 @@ class SQLiteInstance {
         where: where,
         whereArgs: whereArgs,
       );
-      return DataResponse(
-        status: true,
-        message: 'Query successful',
-        data: result,
-      );
+      return Right(result);
     } catch (e) {
-      return DataResponse(status: false, message: 'Query failed: $e');
+      return Left(Exception('Get all data failed: $e'));
     }
   }
 
@@ -69,40 +66,27 @@ class SQLiteInstance {
     }
   }
 
-  Future<DataResponse<int>> update(
+  Future<Either<Exception, Map<String, dynamic>>> update(
     String table,
     Map<String, dynamic> data,
     int id,
   ) async {
     try {
       final db = await database;
-      final count = await db.update(
-        table,
-        data,
-        where: 'id = ?',
-        whereArgs: [id],
-      );
-      return DataResponse(
-        status: true,
-        message: count > 0 ? 'Update successful' : 'No record found to update',
-        data: count,
-      );
+      await db.update(table, data, where: 'id = ?', whereArgs: [id]);
+      return Right(data);
     } catch (e) {
-      return DataResponse(status: false, message: 'Update failed: $e');
+      return Left(Exception('Update failed: $e'));
     }
   }
 
-  Future<DataResponse<int>> delete(String table, int id) async {
+  Future<Either<Exception, int>> delete(String table, int id) async {
     try {
       final db = await database;
       final count = await db.delete(table, where: 'id = ?', whereArgs: [id]);
-      return DataResponse(
-        status: true,
-        message: count > 0 ? 'Delete successful' : 'No record found to delete',
-        data: count,
-      );
+      return Right(count);
     } catch (e) {
-      return DataResponse(status: false, message: 'Delete failed: $e');
+      return Left(Exception('Delete failed: $e'));
     }
   }
 

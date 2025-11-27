@@ -1,4 +1,3 @@
-import 'package:bud_get/chore/handler/data_response.dart';
 import 'package:bud_get/chore/handler/either.dart';
 import 'package:bud_get/module/outcome/data/datasource/outcome_datasource.dart';
 import 'package:bud_get/module/outcome/domain/repository/outcome_repository.dart';
@@ -9,26 +8,29 @@ class OutcomeRepositoryImpl extends OutcomeRepository {
   OutcomeRepositoryImpl(this.outcomeDatasource);
 
   @override
-  Future<Either<Exception, DataResponse>> getOutcomeList({required int skip}) {
-    return outcomeDatasource.fetchOutcomeList(skip: skip);
+  Future<Either<Exception, List<Map<String, dynamic>>>> getOutcomeList() {
+    return outcomeDatasource.fetchOutcomeList();
   }
 
   @override
-  Future<Either<Exception, DataResponse>> createOutcome({
+  Future<Either<Exception, Map<String, dynamic>>> createOutcome({
     required OutcomeModel outcomeModel,
   }) {
-    return outcomeDatasource.storeOutcome(outcomeModel: outcomeModel);
+    return outcomeDatasource.storeOutcome(body: outcomeModel.toMap());
   }
 
   @override
-  Future<Either<Exception, DataResponse>> editOutcome({
+  Future<Either<Exception, Map<String, dynamic>>> editOutcome({
     required OutcomeModel outcomeModel,
   }) {
-    return outcomeDatasource.updateOutcome(outcomeModel: outcomeModel);
+    return outcomeDatasource.updateOutcome(
+      body: outcomeModel.toMap(),
+      id: outcomeModel.id!,
+    );
   }
 
   @override
-  Future<Either<Exception, void>> deleteOutcome({required String outcomeId}) {
-    return outcomeDatasource.destroyOutcome(outcomeId: outcomeId);
+  Future<Either<Exception, int>> deleteOutcome({required int id}) {
+    return outcomeDatasource.destroyOutcome(id: id);
   }
 }
