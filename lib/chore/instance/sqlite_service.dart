@@ -1,4 +1,3 @@
-import 'package:bud_get/chore/handler/data_response.dart';
 import 'package:bud_get/chore/handler/either.dart';
 import 'package:bud_get/common/data/local/sqlite_service.dart';
 import 'package:sqflite/sqflite.dart';
@@ -49,20 +48,16 @@ class SqliteService {
     }
   }
 
-  Future<DataResponse<Map<String, dynamic>?>> getById(
+  Future<Either<Exception, Map<String, dynamic>?>> getById(
     String table,
     int id,
   ) async {
     try {
       final db = await database;
       final result = await db.query(table, where: 'id = ?', whereArgs: [id]);
-      return DataResponse(
-        status: true,
-        message: 'Get by ID successful',
-        data: result.isNotEmpty ? result.first : null,
-      );
+      return Right(result.isNotEmpty ? result.first : null);
     } catch (e) {
-      return DataResponse(status: false, message: 'Get by ID failed: $e');
+      return Left(Exception('Get by ID failed: $e'));
     }
   }
 
@@ -90,17 +85,13 @@ class SqliteService {
     }
   }
 
-  Future<DataResponse<int>> clearTable(String table) async {
+  Future<Either<Exception, int>> clearTable(String table) async {
     try {
       final db = await database;
       final count = await db.delete(table);
-      return DataResponse(
-        status: true,
-        message: 'Table cleared successfully',
-        data: count,
-      );
+      return Right(count);
     } catch (e) {
-      return DataResponse(status: false, message: 'Clear table failed: $e');
+      return Left(Exception('Clear table failed: $e'));
     }
   }
 }
