@@ -40,7 +40,6 @@ class OutcomeLocalDatasource extends OutcomeDatasource {
     required Map<String, dynamic> body,
   }) async {
     final result = await sqliteService.insert('outcomes', body);
-
     return result.fold((l) => Left(l), (r) => Right(r));
   }
 
@@ -50,14 +49,12 @@ class OutcomeLocalDatasource extends OutcomeDatasource {
     required int id,
   }) async {
     final result = await sqliteService.update('outcomes', body, id);
-
     return result.fold((l) => Left(l), (r) => Right(r));
   }
 
   @override
   Future<Either<Exception, int>> destroyOutcome({required int id}) async {
     final result = await sqliteService.delete('outcomes', id);
-
     return result.fold((l) => Left(l), (r) => Right(r));
   }
 }
