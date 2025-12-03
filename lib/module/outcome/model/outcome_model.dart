@@ -21,7 +21,7 @@ class OutcomeModel {
     'description': description,
   };
 
-  factory OutcomeModel.fromMap(Map<String, dynamic> map) => OutcomeModel(
+  factory OutcomeModel.fromJson(Map<String, dynamic> map) => OutcomeModel(
     id: map['id'],
     dateTime: DateTime.parse(map['date']),
     amount: map['amount'],

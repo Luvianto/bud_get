@@ -14,6 +14,5 @@ final outcomeRepositoryProvider = Provider<OutcomeRepository>((ref) {
   final sqliteService = ref.watch(sqliteServiceProvider);
   final datasource = ref.watch(outcomeDatasourceProvider(sqliteService));
   final repository = OutcomeRepositoryImpl(datasource);
-
   return repository;
 });
