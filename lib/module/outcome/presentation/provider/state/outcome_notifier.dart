@@ -12,6 +12,41 @@ class OutcomeNotifier extends Notifier<OutcomeState> {
       state.state != OutcomeConcreteState.loading &&
       state.state != OutcomeConcreteState.fetchingMore;
 
+  void resetState() {
+    state = const OutcomeState.initial();
+  }
+
+  void updateStateFromResponse(
+    Either<Exception, List<Map<String, dynamic>>> response,
+  ) {
+    response.fold(
+      (e) {
+        state = state.copyWith(
+          state: OutcomeConcreteState.failure,
+          message: e.toString(),
+          isLoading: false,
+        );
+      },
+      (data) {
+        final outcomeList = data.map((e) => OutcomeModel.fromJson(e)).toList();
+
+        final totalOutcomes = [...state.outcomeList, ...outcomeList];
+
+        state = state.copyWith(
+          outcomeList: totalOutcomes,
+          state: totalOutcomes.length == data.length
+              ? OutcomeConcreteState.fetchedAllOutcomeModels
+              : OutcomeConcreteState.loaded,
+          hasData: true,
+          message: totalOutcomes.isEmpty ? 'No outcomes found' : '',
+          page: totalOutcomes.length ~/ 10,
+          total: data.length,
+          isLoading: false,
+        );
+      },
+    );
+  }
+
   Future<void> fetchOutcomeList() async {
     if (isFetching &&
         state.state != OutcomeConcreteState.fetchedAllOutcomeModels) {
@@ -30,44 +65,9 @@ class OutcomeNotifier extends Notifier<OutcomeState> {
     } else {
       state = state.copyWith(
         state: OutcomeConcreteState.fetchedAllOutcomeModels,
-        message: 'No more products available',
+        message: 'No more outcomes available',
         isLoading: false,
       );
     }
-  }
-
-  void updateStateFromResponse(
-    Either<Exception, List<Map<String, dynamic>>> response,
-  ) {
-    response.fold(
-      (e) {
-        state = state.copyWith(
-          state: OutcomeConcreteState.failure,
-          message: e.toString(),
-          isLoading: false,
-        );
-      },
-      (data) {
-        final outcomeList = data.map((e) => OutcomeModel.fromJson(e)).toList();
-
-        final totalProducts = [...state.outcomeList, ...outcomeList];
-
-        state = state.copyWith(
-          outcomeList: totalProducts,
-          state: totalProducts.length == data.length
-              ? OutcomeConcreteState.fetchedAllOutcomeModels
-              : OutcomeConcreteState.loaded,
-          hasData: true,
-          message: totalProducts.isEmpty ? 'No products found' : '',
-          page: totalProducts.length ~/ 10,
-          total: data.length,
-          isLoading: false,
-        );
-      },
-    );
-  }
-
-  void resetState() {
-    state = const OutcomeState.initial();
   }
 }
