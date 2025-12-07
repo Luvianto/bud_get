@@ -1,5 +1,5 @@
-import 'package:bud_get/chore/handler/either.dart';
-import 'package:bud_get/common/data/local/sqlite_service.dart';
+import 'package:bud_get/common/handler/either.dart';
+import 'package:bud_get/storage/sqlite_database.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SqliteService {
@@ -11,7 +11,7 @@ class SqliteService {
   static Database? _database;
 
   Future<Database> get database async {
-    _database ??= await SQLiteService.init();
+    _database ??= await SqliteDatabase.init();
     return _database!;
   }
 

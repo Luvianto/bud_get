@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class SQLiteService {
+class SqliteDatabase {
   static const _dbName = 'bud_get.db';
   static const _dbVersion = 1;
 

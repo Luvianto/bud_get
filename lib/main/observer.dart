@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-base class Observers extends ProviderObserver {
+base class Observer extends ProviderObserver {
   @override
   void didUpdateProvider(
     ProviderObserverContext context,

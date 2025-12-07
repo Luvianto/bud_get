@@ -21,7 +21,7 @@ Future<void> initializeApp(Environment env) async {
     ),
   );
 
-  runApp(ProviderScope(observers: [Observers()], child: MainApp()));
+  runApp(ProviderScope(observers: [Observer()], child: MainApp()));
 
   await Future.delayed(const Duration(seconds: 2));
 }
