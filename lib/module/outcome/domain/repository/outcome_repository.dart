@@ -1,4 +1,4 @@
-import 'package:bud_get/chore/handler/either.dart';
+import 'package:bud_get/common/handler/either.dart';
 import 'package:bud_get/module/outcome/model/outcome_model.dart';
 
 abstract class OutcomeRepository {

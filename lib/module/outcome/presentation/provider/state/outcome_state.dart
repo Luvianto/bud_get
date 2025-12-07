@@ -7,7 +7,7 @@ enum OutcomeConcreteState {
   loaded,
   failure,
   fetchingMore,
-  fetchedAllOutcomeModels,
+  fetchedAllOutcomes,
 }
 
 // Equatable class compare objects/instance created on class by value, not by memory address.

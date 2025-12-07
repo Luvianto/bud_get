@@ -1,4 +1,4 @@
-import 'package:bud_get/chore/handler/either.dart';
+import 'package:bud_get/common/handler/either.dart';
 import 'package:bud_get/module/outcome/domain/provider/outcome_provider.dart';
 import 'package:bud_get/module/outcome/model/outcome_model.dart';
 import 'package:bud_get/module/outcome/presentation/provider/state/outcome_state.dart';
@@ -35,7 +35,7 @@ class OutcomeNotifier extends Notifier<OutcomeState> {
         state = state.copyWith(
           outcomeList: totalOutcomes,
           state: totalOutcomes.length == data.length
-              ? OutcomeConcreteState.fetchedAllOutcomeModels
+              ? OutcomeConcreteState.fetchedAllOutcomes
               : OutcomeConcreteState.loaded,
           hasData: true,
           message: totalOutcomes.isEmpty ? 'No outcomes found' : '',
@@ -48,8 +48,7 @@ class OutcomeNotifier extends Notifier<OutcomeState> {
   }
 
   Future<void> fetchOutcomeList() async {
-    if (isFetching &&
-        state.state != OutcomeConcreteState.fetchedAllOutcomeModels) {
+    if (isFetching && state.state != OutcomeConcreteState.fetchedAllOutcomes) {
       state = state.copyWith(
         state: state.page > 0
             ? OutcomeConcreteState.fetchingMore
@@ -64,7 +63,7 @@ class OutcomeNotifier extends Notifier<OutcomeState> {
       updateStateFromResponse(response);
     } else {
       state = state.copyWith(
-        state: OutcomeConcreteState.fetchedAllOutcomeModels,
+        state: OutcomeConcreteState.fetchedAllOutcomes,
         message: 'No more outcomes available',
         isLoading: false,
       );

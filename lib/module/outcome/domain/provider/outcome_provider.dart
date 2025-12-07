@@ -1,5 +1,5 @@
-import 'package:bud_get/chore/instance/sqlite_service.dart';
-import 'package:bud_get/common/domain/sqlite_provider.dart';
+import 'package:bud_get/common/data/local/service/sqlite_service.dart';
+import 'package:bud_get/common/domain/sqlite_service_provider.dart';
 import 'package:bud_get/module/outcome/data/datasource/outcome_datasource.dart';
 import 'package:bud_get/module/outcome/data/repository/outcome_repository_impl.dart';
 import 'package:bud_get/module/outcome/domain/repository/outcome_repository.dart';

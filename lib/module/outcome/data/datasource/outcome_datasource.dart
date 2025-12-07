@@ -1,5 +1,5 @@
-import 'package:bud_get/chore/handler/either.dart';
-import 'package:bud_get/chore/instance/sqlite_service.dart';
+import 'package:bud_get/common/handler/either.dart';
+import 'package:bud_get/common/data/local/service/sqlite_service.dart';
 
 abstract class OutcomeDatasource {
   Future<Either<Exception, List<Map<String, dynamic>>>> fetchOutcomeList();
