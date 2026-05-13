@@ -56,7 +56,6 @@ class AppTheme {
     );
   }
 
-  /// Light theme data of the app
   static ThemeData get lightTheme {
     return ThemeData(
       brightness: Brightness.light,
